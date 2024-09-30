@@ -1,0 +1,19 @@
+{%extends 'base.html'%}
+
+{%block main_block%}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-3"></div>
+        <div class="col-6">
+         <form action="" method="post" class="border border-2 p-4 shadow">
+             <h4 class="text-center my-2">Add Category</h4>
+             {%csrf_token%}
+             {{form}}
+             <button type="submit" class="btn btn-info">Add</button>
+
+         </form>
+        <div class="col-3"></div> 
+     </div>
+</div>
+
+{%endblock%}

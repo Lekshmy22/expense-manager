@@ -1,0 +1,110 @@
+{%extends 'base.html'%}
+
+{%block main_block%}
+<div class="container">
+    <div class="row my-3">
+        <div class="col-4"></div>
+        <div class="col-4 border border-2 rounded p-3 text-center shadow">
+            <h3>TotalExpense:{{total_expense}}</h3>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    <div class="row border border-dark">
+        <div class="col-3 text-center border">
+            Category Summary
+            {%for cat in category_summary%}
+            <div class="border p-3 my-5 text-center">
+                {{cat.category_object__name}}:{{cat.total}}
+            </div>
+
+            {%endfor%}
+        </div>
+        <div class="col-3 text-center border">
+            Category Chart
+            <canvas id="categoryChart"></canvas>
+        </div>
+        <div class="col-3 text-center border">
+            Payment Summary
+            {%for payment in payment_summary%}
+            <div class="border p-3 my-5 text-center">
+                {{payment.payment_method}}:{{payment.total}}
+            </div>
+
+            {%endfor%}
+        </div>
+        <div class="col-3 text-center">
+            Payement Chart
+            <canvas id="paymentChart"></canvas>
+        </div>
+    </div>
+</div>
+
+{%endblock%}
+
+{%block script_block%}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- category chart -->
+<script>
+    const ctx = document.getElementById('categoryChart');
+  
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: [{%for cat in category_summary%} "{{cat.category_object__name}}" , {%endfor%}],
+      datasets: [{
+        label: '# of total',
+        data: [{%for cat in category_summary%} "{{cat.total}}" , {%endfor%}],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+//   payment chart
+const ctx1 = document.getElementById('paymentChart');
+  
+  new Chart(ctx1, {
+    type: 'doughnut',
+    data: {
+      labels: [{%for payment in payment_summary%} "{{payment.payment_method}}" , {%endfor%}],
+      datasets: [{
+        label: '# of total',
+        data: [{%for payment in payment_summary%} "{{payment.total}}" , {%endfor%}],
+        borderWidth: 1,
+        backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+</script>
+    
+{%endblock%}
